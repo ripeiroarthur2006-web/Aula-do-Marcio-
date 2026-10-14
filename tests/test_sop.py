@@ -12,6 +12,7 @@ class SopTest(unittest.TestCase):
             self.assertAlmostEqual(scenario["plan"][-1]["backlog"], 0)
             self.assertGreaterEqual(scenario["plan"][-1]["inventory"], 299.9999)
             self.assertLessEqual(max(x["normal"] for x in scenario["plan"]), 800.0001)
+            self.assertAlmostEqual(sum(x["monthly_result"] for x in scenario["plan"]), scenario["economic_result"])
 
 
 if __name__ == "__main__":

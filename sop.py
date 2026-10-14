@@ -106,8 +106,10 @@ def compare_sop_scenarios(options: dict[str, Any] | None = None) -> dict[str, An
         if risk:
             limits[6] *= .5; limits[7] *= .5
         result = solve(options, demand, limits)
-        for month in result["plan"]:
+        for month_index, month in enumerate(result["plan"]):
             month["revenue"] = month["demand"] * price
+            month["campaign_cost"] = campaign_cost if marketing and month_index == 4 else 0
+            month["monthly_result"] = month["revenue"] - month["cost"] - month["campaign_cost"]
         total_demand = sum(demand)
         revenue = total_demand * price
         campaign = campaign_cost if marketing else 0

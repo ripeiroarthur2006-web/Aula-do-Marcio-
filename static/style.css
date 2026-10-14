@@ -5,4 +5,5 @@
 .revenue-chart .bar{fill:#8aa23c}.revenue-chart .bar:hover{fill:#6f872d}
 .chart-wide{grid-column:1/-1}.result-chart .bar{fill:#287d65}.result-chart .bar.negative{fill:#b34b4b}.result-chart .zero-line{stroke:#34433f;stroke-width:1.5}
 .nav-link.active{background:var(--lime);border-color:var(--lime);color:var(--ink)}header .header-actions{align-items:center;justify-content:flex-end;flex-wrap:wrap}
+.inline-actions{display:flex;gap:9px;flex-wrap:wrap}
 

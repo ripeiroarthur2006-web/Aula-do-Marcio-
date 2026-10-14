@@ -62,6 +62,14 @@ def validate(payload: dict[str, Any]) -> Model:
         "subcontract_unit_cost",
     )
     params = {name: _number(source, name) for name in names}
+    for name, default in (("max_workers", float("inf")), ("max_inventory", float("inf")), ("min_final_inventory", 0)):
+        raw = source.get(name, default)
+        try:
+            params[name] = float(raw)
+        except (TypeError, ValueError) as exc:
+            raise ValueError(f"O campo '{name}' deve ser numérico.") from exc
+        if params[name] < 0:
+            raise ValueError(f"O campo '{name}' deve ser maior ou igual a zero.")
     for required in ("productive_hours_day", "paid_hours_day", "hours_per_unit", "overtime_units_hour"):
         if params[required] <= 0:
             raise ValueError(f"O campo '{required}' deve ser maior que zero.")
@@ -89,6 +97,8 @@ def optimize(payload: dict[str, Any]) -> dict[str, Any]:
         c[model.ix("inventory", t)] = p["holding_unit_cost"]
         c[model.ix("backlog", t)] = p["backlog_unit_cost"]
         upper[model.ix("subcontract", t)] = month["subcontract_limit"]
+        upper[model.ix("workers", t)] = p["max_workers"]
+        upper[model.ix("inventory", t)] = p["max_inventory"]
         for field in ("workers", "hires", "fires"):
             integrality[model.ix(field, t)] = 1
 
@@ -132,6 +142,8 @@ def optimize(payload: dict[str, Any]) -> dict[str, Any]:
 
     if p["require_final_service"]:
         constraint({model.ix("backlog", n - 1): 1}, 0, 0)
+    if p["min_final_inventory"]:
+        constraint({model.ix("inventory", n - 1): 1}, p["min_final_inventory"], np.inf)
 
     result = milp(
         c=c,

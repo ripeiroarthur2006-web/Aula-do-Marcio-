@@ -6,6 +6,7 @@ from pathlib import Path
 import sys
 
 from optimizer import optimize
+from ibp import compare_scenarios
 
 ROOT = Path(__file__).parent / "static"
 
@@ -22,7 +23,7 @@ class Handler(SimpleHTTPRequestHandler):
         super().end_headers()
 
     def do_POST(self):
-        if self.path != "/api/optimize":
+        if self.path not in ("/api/optimize", "/api/ibp"):
             self.send_error(404)
             return
         try:
@@ -30,7 +31,8 @@ class Handler(SimpleHTTPRequestHandler):
             if length > 1_000_000:
                 raise ValueError("A solicitação é muito grande.")
             payload = json.loads(self.rfile.read(length))
-            response, status = optimize(payload), 200
+            response = compare_scenarios(payload) if self.path == "/api/ibp" else optimize(payload)
+            status = 200
         except (ValueError, json.JSONDecodeError) as exc:
             response, status = {"success": False, "error": str(exc)}, 400
         except Exception:

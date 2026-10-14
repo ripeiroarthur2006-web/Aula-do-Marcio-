@@ -4,4 +4,5 @@
 .mrp-controls{display:grid;grid-template-columns:2fr repeat(3,1fr);gap:14px;align-items:end}.mrp-controls .primary{height:48px}.mrp-controls label:first-child{grid-column:1/-1}#items input,#items select,#bom input,#bom select{min-width:95px;width:100%;margin:0;padding:8px}#items td,#bom td{padding:7px}#record th:first-child{position:sticky;left:0;background:#f2f5f1;z-index:1}#record td{min-width:90px}@media(max-width:850px){.mrp-controls{grid-template-columns:1fr 1fr}.mrp-controls label:first-child{grid-column:1/-1}}@media(max-width:520px){.mrp-controls{grid-template-columns:1fr}.mrp-controls label:first-child{grid-column:auto}}
 .revenue-chart .bar{fill:#8aa23c}.revenue-chart .bar:hover{fill:#6f872d}
 .chart-wide{grid-column:1/-1}.result-chart .bar{fill:#287d65}.result-chart .bar.negative{fill:#b34b4b}.result-chart .zero-line{stroke:#34433f;stroke-width:1.5}
+.nav-link.active{background:var(--lime);border-color:var(--lime);color:var(--ink)}header .header-actions{align-items:center;justify-content:flex-end;flex-wrap:wrap}
 

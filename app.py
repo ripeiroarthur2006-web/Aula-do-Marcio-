@@ -8,6 +8,7 @@ import sys
 from optimizer import optimize
 from ibp import compare_scenarios
 from sop import compare_sop_scenarios
+from mrp import calculate_mrp, default_catalog
 
 ROOT = Path(__file__).parent / "static"
 
@@ -24,7 +25,7 @@ class Handler(SimpleHTTPRequestHandler):
         super().end_headers()
 
     def do_POST(self):
-        if self.path not in ("/api/optimize", "/api/ibp", "/api/sop"):
+        if self.path not in ("/api/optimize", "/api/ibp", "/api/sop", "/api/mrp"):
             self.send_error(404)
             return
         try:
@@ -36,6 +37,8 @@ class Handler(SimpleHTTPRequestHandler):
                 response = compare_scenarios(payload)
             elif self.path == "/api/sop":
                 response = compare_sop_scenarios(payload)
+            elif self.path == "/api/mrp":
+                response = calculate_mrp(payload)
             else:
                 response = optimize(payload)
             status = 200
@@ -49,6 +52,17 @@ class Handler(SimpleHTTPRequestHandler):
         self.send_header("Content-Length", str(len(body)))
         self.end_headers()
         self.wfile.write(body)
+
+    def do_GET(self):
+        if self.path == "/api/mrp/catalog":
+            body = json.dumps(default_catalog(), ensure_ascii=False).encode()
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json; charset=utf-8")
+            self.send_header("Content-Length", str(len(body)))
+            self.end_headers()
+            self.wfile.write(body)
+            return
+        super().do_GET()
 
 
 if __name__ == "__main__":

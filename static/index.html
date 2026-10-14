@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Planeja — Planejamento agregado</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header><div><span class="eyebrow">PLANEJAMENTO DE PRODUÇÃO</span><h1>Planeja</h1><p>Encontre o plano de menor custo para sua operação.</p></div><button id="example" class="ghost">Restaurar exemplo</button></header>
+  <main>
+    <section class="card intro"><div><h2>Dados gerais</h2><p>Informe capacidade, custos e regras da operação.</p></div><span class="step">1</span></section>
+    <form id="planner">
+      <section class="card grid fields">
+        <label>Trabalhadores iniciais<input name="initial_workers" type="number" min="0" step="1"></label>
+        <label>Estoque inicial (un.)<input name="initial_inventory" type="number" min="0" step="any"></label>
+        <label>Pedidos atrasados iniciais<input name="initial_backlog" type="number" min="0" step="any"></label>
+        <label>Horas produtivas/dia<input name="productive_hours_day" type="number" min="0" step="any"></label>
+        <label>Horas pagas/dia<input name="paid_hours_day" type="number" min="0" step="any"></label>
+        <label>Horas por unidade<input name="hours_per_unit" type="number" min="0" step="any"></label>
+        <label>Custo da hora normal (US$)<input name="regular_hour_cost" type="number" min="0" step="any"></label>
+        <label>Material por unidade (US$)<input name="material_unit_cost" type="number" min="0" step="any"></label>
+        <label>Estoque por un./período (US$)<input name="holding_unit_cost" type="number" min="0" step="any"></label>
+        <label>Falta por un./período (US$)<input name="backlog_unit_cost" type="number" min="0" step="any"></label>
+        <label>Contratação por trabalhador<input name="hire_cost" type="number" min="0" step="any"></label>
+        <label>Demissão por trabalhador<input name="fire_cost" type="number" min="0" step="any"></label>
+        <label>Custo da hora extra (US$)<input name="overtime_hour_cost" type="number" min="0" step="any"></label>
+        <label>Limite extra/trabalhador<input name="overtime_limit_worker" type="number" min="0" step="any"></label>
+        <label>Rendimento extra (un./h)<input name="overtime_units_hour" type="number" min="0" step="any"></label>
+        <label>Subcontratação por peça<input name="subcontract_unit_cost" type="number" min="0" step="any"></label>
+        <label class="check"><input name="require_final_service" type="checkbox"> Exigir que toda a demanda seja atendida até o último período</label>
+      </section>
+
+      <section class="card intro"><div><h2>Horizonte de planejamento</h2><p>Configure demanda, dias úteis e limite de terceiros por período.</p></div><span class="step">2</span></section>
+      <section class="card table-card"><div class="table-actions"><button type="button" id="add" class="ghost">+ Adicionar período</button></div><div class="scroll"><table><thead><tr><th>Período</th><th>Demanda</th><th>Dias úteis</th><th>Limite subcontratação</th><th></th></tr></thead><tbody id="months"></tbody></table></div></section>
+      <button class="primary" type="submit"><span>Calcular plano ótimo</span><small>Programação linear inteira mista</small></button>
+    </form>
+
+    <section id="results" hidden>
+      <section class="card intro"><div><h2>Plano otimizado</h2><p id="result-message"></p></div><span class="step ok">✓</span></section>
+      <div id="summary" class="summary"></div>
+      <section class="card table-card"><div class="scroll"><table><thead><tr><th>Período</th><th>Equipe</th><th>Contr.</th><th>Dem.</th><th>Produção normal</th><th>Horas extras</th><th>Prod. extra</th><th>Terceiros</th><th>Estoque</th><th>Falta</th><th>Custo</th></tr></thead><tbody id="plan"></tbody></table></div></section>
+      <section class="card"><h2>Composição dos custos</h2><div id="costs" class="costs"></div></section>
+    </section>
+    <div id="error" class="error" hidden></div>
+  </main>
+  <footer>Os resultados dependem dos dados e limites informados. Revise o plano antes de aplicá-lo.</footer>
+  <script src="app.js"></script>
+</body>
+</html>
+

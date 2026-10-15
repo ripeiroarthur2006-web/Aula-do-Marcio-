@@ -9,6 +9,7 @@ from optimizer import optimize
 from ibp import compare_scenarios
 from sop import compare_sop_scenarios
 from mrp import calculate_mrp, default_catalog
+from eoq import calculate_eoq
 
 ROOT = Path(__file__).parent / "static"
 
@@ -25,7 +26,7 @@ class Handler(SimpleHTTPRequestHandler):
         super().end_headers()
 
     def do_POST(self):
-        if self.path not in ("/api/optimize", "/api/ibp", "/api/sop", "/api/mrp"):
+        if self.path not in ("/api/optimize", "/api/ibp", "/api/sop", "/api/mrp", "/api/eoq"):
             self.send_error(404)
             return
         try:
@@ -39,6 +40,8 @@ class Handler(SimpleHTTPRequestHandler):
                 response = compare_sop_scenarios(payload)
             elif self.path == "/api/mrp":
                 response = calculate_mrp(payload)
+            elif self.path == "/api/eoq":
+                response = calculate_eoq(payload)
             else:
                 response = optimize(payload)
             status = 200

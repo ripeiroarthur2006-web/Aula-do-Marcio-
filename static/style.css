@@ -6,4 +6,5 @@
 .chart-wide{grid-column:1/-1}.result-chart .bar{fill:#287d65}.result-chart .bar.negative{fill:#b34b4b}.result-chart .zero-line{stroke:#34433f;stroke-width:1.5}
 .nav-link.active{background:var(--lime);border-color:var(--lime);color:var(--ink)}header .header-actions{align-items:center;justify-content:flex-end;flex-wrap:wrap}
 .inline-actions{display:flex;gap:9px;flex-wrap:wrap}
+.cost-components{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:14px 0}.cost-option{background:#fff;border:1px solid var(--line);border-radius:12px;padding:15px}.cost-option .check{align-items:flex-start}.cost-option .check span{display:block}.cost-option small{display:block;color:var(--muted);font-weight:400;margin-top:2px}.cost-inputs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.cost-inputs label{font-size:10px}.cost-inputs input{padding:8px}.note{color:var(--muted);font-size:12px;margin:16px 0 0}@media(max-width:900px){.cost-components{grid-template-columns:repeat(2,1fr)}}@media(max-width:560px){.cost-components{grid-template-columns:1fr}.cost-inputs{grid-template-columns:1fr}}
 

@@ -16,6 +16,9 @@ class EoqTest(unittest.TestCase):
         self.assertAlmostEqual(result["economic_lot"], 693, delta=1)
         self.assertAlmostEqual(result["reorder_point"], 200)
         self.assertTrue(result["minimum_confirmed"])
+        self.assertIn("relevant_cost", result["curve"][0])
+        self.assertIn("replenishment_cost", result["curve"][0])
+        self.assertIn("maintenance_cost", result["curve"][0])
 
     def test_safety_stock_increases_with_service(self):
         base = {"selected_costs": [2, 5], "annual_demand": 1000,

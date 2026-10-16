@@ -100,7 +100,12 @@ def calculate_eoq(data: dict[str, Any]) -> dict[str, Any]:
         q = low + (high - low) * i / 30
         q = max(min_lot, ceil(q / multiple - 1e-12) * multiple)
         if not curve or q != curve[-1]["quantity"]:
-            curve.append({"quantity": q, "total_cost": total(q)})
+            parts = components(q)
+            maintenance = parts["Manutenção por taxas"] + parts["Armazenagem física"]
+            curve.append({"quantity": q, "total_cost": total(q),
+                          "replenishment_cost": parts["Reposição"],
+                          "maintenance_cost": maintenance,
+                          "relevant_cost": parts["Reposição"] + maintenance})
     return {"success": True, "economic_lot": optimum, "reorder_point": reorder_point,
             "safety_stock": safety_stock, "z_factor": z, "orders_per_year": demand / optimum,
             "cycle_days": working_days * optimum / demand, "annual_total_cost": total(optimum),
